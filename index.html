@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini Personal Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-1: #0f172a; /* slate-900 */
+      --bg-2: #1e293b; /* slate-800 */
+      --accent: #22d3ee; /* cyan-400 */
+      --accent-2: #a78bfa; /* violet-400 */
+      --card: rgba(255,255,255,.06);
+      --text: #e5e7eb; /* gray-200 */
+      --muted: #9ca3af; /* gray-400 */
+      --ok: #34d399; /* green-400 */
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% 10%, rgba(34,211,238,.15), transparent 60%),
+        radial-gradient(1000px 700px at 95% 15%, rgba(167,139,250,.12), transparent 60%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .dashboard {
+      width: min(800px, 95vw);
+      border-radius: 24px;
+      background: var(--card);
+      backdrop-filter: blur(10px) saturate(140%);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow: hidden;
+      animation: pop .5s ease-out;
+    }
+    @keyframes pop { from { transform: translateY(8px); opacity: 0; } }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 26px;
+      background: linear-gradient(90deg, rgba(34,211,238,.12), rgba(167,139,250,.12));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .brand {
+      display: flex; gap: 12px; align-items: center;
+      font-weight: 800; letter-spacing: .5px; font-size: 18px;
+    }
+    .badge {
+      font-size: 11px; padding: 6px 10px; border-radius: 999px;
+      background: rgba(52,211,153,.12);
+      border: 1px solid rgba(52,211,153,.35);
+      color: var(--ok);
+      text-transform: uppercase;
+      letter-spacing: .7px;
+    }
+
+    .grid { display: grid; gap: 18px; padding: 22px; }
+    @media (min-width: 640px) { .grid { grid-template-columns: 1.4fr .8fr; } }
+
+    .card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px; padding: 18px 20px;
+    }
+    .title { font-size: 13px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); margin: 0 0 10px; }
+
+    .clock { display: grid; gap: 6px; }
+    #time { font-size: clamp(38px, 6vw, 64px); font-weight: 800; line-height: .95; }
+    #date { color: var(--muted); font-size: 14px; }
+    #greeting { font-weight: 600; color: var(--accent); }
+
+    .quicklinks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .link {
+      padding: 12px 14px; border-radius: 12px; text-decoration: none; color: var(--text);
+      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.03);
+    }
+    .link:hover { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.06); }
+
+    .footer { text-align: center; padding: 16px; color: var(--muted); font-size: 12px; border-top: 1px solid rgba(255,255,255,.08); }
+
+    .name { font-weight: 800; background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+    .toggle {
+      display: inline-flex; gap: 8px; align-items: center; cursor: pointer; font-size: 12px; color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="dashboard" role="main">
+    <header class="header">
+      <div class="brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 3l8.485 8.485-8.485 8.485L3.515 11.485 12 3z" stroke="currentColor" stroke-width="1.2" opacity=".7"/>
+        </svg>
+        <span>Mini Personal Dashboard</span>
+      </div>
+      <span class="badge" id="status">online</span>
+    </header>
+
+    <section class="grid">
+      <section class="card">
+        <p class="title">Overview</p>
+        <div class="clock">
+          <div id="greeting">Good day</div>
+          <div id="time">00:00:00</div>
+          <div id="date">Monday, 1 January 1970</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <p class="title">You</p>
+        <div style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">
+          <span id="displayName" class="name">Your Name</span>
+        </div>
+        <div style="display:flex; justify-content: space-between; align-items:center;">
+          <label class="toggle"><input id="24h" type="checkbox"/> 24‑hour clock</label>
+          <small style="color: var(--muted);">Edit in code: <code>USER_NAME</code></small>
+        </div>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1;">
+        <p class="title">Quick Links</p>
+        <div class="quicklinks">
+          <a class="link" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="link" href="https://calendar.google.com/" target="_blank" rel="noreferrer">Calendar</a>
+          <a class="link" href="https://www.tradingview.com/" target="_blank" rel="noreferrer">TradingView</a>
+          <a class="link" href="https://www.youtube.com/" target="_blank" rel="noreferrer">YouTube</a>
+        </div>
+      </section>
+
+      <div class="footer">Built with ♥ — update your name and deploy on GitHub Pages</div>
+    </section>
+  </main>
+
+  <script>
+    // ====== CONFIG ======
+    const USER_NAME = 'Joy'; // ← change to your preferred display name
+
+    // ====== STATE ======
+    const nameEl = document.getElementById('displayName');
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const greetEl = document.getElementById('greeting');
+    const cb24 = document.getElementById('24h');
+
+    nameEl.textContent = USER_NAME;
+
+    function pad(n) { return String(n).padStart(2, '0'); }
+
+    function updateClock() {
+      const now = new Date();
+      const hour = now.getHours();
+      const is24 = cb24.checked;
+
+      // Greeting
+      let greet = 'Good evening';
+      if (hour < 12) greet = 'Good morning';
+      else if (hour < 17) greet = 'Good afternoon';
+      greetEl.textContent = `${greet}, ${USER_NAME}`;
+
+      // Time
+      let h = hour, ampm = 'AM';
+      if (!is24) {
+        ampm = hour >= 12 ? 'PM' : 'AM';
+        h = hour % 12 || 12;
+      }
+      const t = `${pad(h)}:${pad(now.getMinutes())}:${pad(now.getSeconds())}${is24 ? '' : ' ' + ampm}`;
+      timeEl.textContent = t;
+
+      // Date
+      const dateStr = now.toLocaleDateString(undefined, {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      dateEl.textContent = dateStr;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
